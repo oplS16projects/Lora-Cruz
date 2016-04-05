@@ -12,17 +12,13 @@ We will use object orientation for the initial creation of the lower levels of t
 The data that we will be working on will be writen by ourselves.
 
 ### Deliverable and Demonstration
-Explain exactly what you'll have at the end. What will it be able to do at the live demo?
+At the end we will have an interactive dungeon crawler that has the player move from level to level, and encounting monsters which they will battle with text based decisions such as fighting, running away,healing.If the are to choose fighting there are chances that they will will miss the enemy but there is a chance that the enemmy will also miss, if they win the battle they gain experience and move up ,this will repeat until they reach the boss.
 
-What exactly will you produce at the end of the project? A piece of software, yes, but what will it do? Here are some questions to think about (and answer depending on your application).
-
-Will it run on some data, like batch mode? Will you present some analytical results of the processing? How can it be re-run on different source data?
-
-Will it be interactive? Can you show it working? This project involves a live demo, so interactivity is good.
+-Potential changes are being able to go up and down by choice but problems with this is that we will have to randomly generate the boss with higher parameters to increase difficulty.
 
 ### Evaluation of Results
-How will you know if you are successful? 
-If you include some kind of _quantitative analysis,_ that would be good.
+
+The player will start at the bottom and be able to move their way through the levels of the dungeon gaining experience from killing monsters, leveling up and eveutally reach the final boss.
 
 ## Architecture Diagram
 Upload the architecture diagram you made for your slide presentation to your repository, and include it in-line here.
