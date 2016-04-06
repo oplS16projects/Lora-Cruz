@@ -21,9 +21,7 @@ At the end we will have an interactive dungeon crawler that has the player move 
 The player will start at the bottom and be able to move their way through the levels of the dungeon gaining experience from killing monsters, leveling up and eveutally reach the final boss.
 
 ## Architecture Diagram
-Upload the architecture diagram you made for your slide presentation to your repository, and include it in-line here.
-
-Create several paragraphs of narrative to explain the pieces and how they interoperate.
+![alt tag](http://i795.photobucket.com/albums/yy234/joel24478/Screen%20Shot%202016-04-05%20at%207.59.25%20PM_zpsoo4veaqj.png)
 
 ## Schedule
 
