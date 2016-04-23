@@ -30,6 +30,9 @@ The player will start at the bottom and be able to move their way through the le
 Traversing through the dungeon(tree)  
 GUI for showing Monsters using Images library (optional)  
 
+### First Milestone Update
+The original plan for the creation of the Player and the monsters was to create them as simple objects and change but we decided to create a dispatch for both of them.The reason behind this we can make create global variables at the top and use these variables to control the monster and player.With this we can avoid use same names and know that the scope of these items is contained.We can define an item and set the return value from the dispatch to this and then we can use these new values later on to manipulate the player or monsters.
+
 ### Second Milestone (Fri Apr 22)  
 
 Create monster objects and their parameters  
