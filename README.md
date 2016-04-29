@@ -8,10 +8,8 @@
 There a several buttons which are used to act within the enviroment that were created using the gui library.There are monsters that the player fights and come out victorious or a loser based on how lucky they really are.
 
 ##Screenshot
-(insert a screenshot here. You may opt to get rid of the title for it. You need at least one screenshot. Make it actually appear here, don't just add a link.)
-
 Here's a demonstration of how to display an image that's uploaded to this repo:
-![screenshot showing env diagram](withdraw.png)
+![screenshot showing env diagram](https://github.com/oplS16projects/Lora-Cruz/blob/master/Screen%20Shot%202016-04-29%20at%2011.23.52%20AM.png)
 
 ##Concepts Demonstrated
 
@@ -26,7 +24,7 @@ of the dispatch to the outside.
 that was a white color different than the background.We assigned functionality to the buttons within the simple interface to change 
 the values of the objects.
 
-* [AVL Tree](https://docs.racket-lang.org/avl/index.html):
+* [AVL Tree](https://docs.racket-lang.org/avl/index.html): The AVL library was used to place monsters that were created in project.rkt. We feed it monsters and it spits them out in the order they were placed in, so basic monsters first then the Boss monster. 
 
 ##Favorite Scheme Expressions
 ####Andry 
@@ -52,15 +50,25 @@ This is my favorite segment.What it does it it creates a button which has a call
                          )])
                  
 ```
-####Lillian (another team member)
-Each team member should identify a favorite expression or procedure, written by them, and explain what it does. Why is it your favorite? What OPL philosophy does it embody?
+####Joel
+This was my favorite snippit of code because I had fun writing the players special move. What is does is run a callback function when the button is clicked. It grabs chuncks of information about the player and monster, and displays it in the appropriate text fields on our gui.
 ```scheme
-(let* ((expr (convert-to-regexp (read-line my-in-port)))
-             (matches (flatten
-                       (hash-map *words*
-                                 (lambda (key value)
-                                   (if (regexp-match expr key) key '()))))))
-  matches)
+(new button% [parent battle]
+     [label "Special"]
+     [min-width 100]
+     [min-height 100]
+     [callback (lambda (b e) (clear-text)
+                 (monster-clear-text)
+                 (define special-use (Player1 'special))
+                 (define special-output
+                   (if (number? special-use);;if its a number then it means we can attack
+                       (special-goes-off 500)
+                       (string-append "Players HP: " (->string (Player1 'getHealth)) (->string special-use)))) ;;else we got the string "Cant use special yet!"
+                 (send editor insert special-output)
+                 (if (< (monster 'getHealth) 0)
+                     (send monster-editor insert (monster-dead))
+                     (send monster-editor insert (string-append (monster-attack-output (monster 'getHealth) (monster 'attack)))))
+                       )])
 ```
 
 #How to Download and Run
@@ -70,10 +78,3 @@ Each team member should identify a favorite expression or procedure, written by 
 * click run at the top right
 
 When running you can click on the buttons labled with the specific actions to be performed and the output of your actions will be displayed.The attack numbers are randomly generated so when you fight against the monster you can kill them instantly or they can do the same to you.Is RNG on your side?
-
-
-
-
-You may want to link to your latest release for easy downloading by people (such as Mark).
-
-Include what file to run, what to do with that file, how to interact with the app when its running, etc. 
