@@ -1,64 +1,79 @@
-# Lora-Cruz
-
-# Project Title: Dragon Hall Z
-
-### Statement  
-The basic idea is to use AVL tree/regular tree to create a dungeon crawler in which we use the image libraries to display monsters to the player,and based on the level of the tree the user is on the difficulty of the monster the player will be able to obtain more epxerience to level up and go to higher difficulties.The reason this is interesting personally is because dungeon crawlers are simple but can be difficult and entertaining at the same time.We hope to learn how to use what we have previosly learned and apply it in different ways such as using lambda to create a way to calculate accuracy, create a random number generator for player stat gain such as health,mana.
-
-### Analysis  
-We will use object orientation for the initial creation of the lower levels of the tree to control the beggining difficulty of the game and for the final boss of the game this way we can control the begging and end of the enviroment everything else is left to the player.
-
-### Data set or other source materials
-The data that we will be working on will be writen by ourselves.
-
-### Deliverable and Demonstration
-At the end we will have an interactive dungeon crawler that has the player move from level to level, and encounting monsters which they will battle with text based decisions such as fighting, running away,healing.If the are to choose fighting there are chances that they will will miss the enemy but there is a chance that the enemmy will also miss, if they win the battle they gain experience and move up ,this will repeat until they reach the boss.
-
--Potential changes are being able to go up and down by choice but problems with this is that we will have to randomly generate the boss with higher parameters to increase difficulty.
-
-### Evaluation of Results
-
-The player will start at the bottom and be able to move their way through the levels of the dungeon gaining experience from killing monsters, leveling up and eveutally reach the final boss.
-
-## Architecture Diagram
-![alt tag](http://i795.photobucket.com/albums/yy234/joel24478/Screen%20Shot%202016-04-05%20at%207.59.25%20PM_zpsoo4veaqj.png)
-
-## Schedule
-
-### First Milestone (Fri Apr 15)  
-
-Traversing through the dungeon(tree)  
-GUI for showing Monsters using Images library (optional)  
-
-### First Milestone Update
-The original plan for the creation of the Player and the monsters was to create them as simple objects and change but we decided to create a dispatch for both of them.The reason behind this we can make create global variables at the top and use these variables to control the monster and player.With this we can avoid use same names and know that the scope of these items is contained.We can define an item and set the return value from the dispatch to this and then we can use these new values later on to manipulate the player or monsters.
-
-### Second Milestone (Fri Apr 22)  
-
-Create monster objects and their parameters  
-Modification of Player object with lambda functions  
-
-### First Milestone Update
-As of  current we have achieved most of our initial proposals with slight alterations.The dispatches for the enemies and and player are taking in some arbitriary value in order to see the functions working we plan on changing some of the elements within the dispatcher into setters and getters in order to make to make obtaining specific values more easily.We began the initial implimentation of the encounter window we added a simple GUI with outputs from both monsters and players displaying some of their actions so the person interacting can know what is happening.There are buttons for this simple interaction window but the functionality is simple.
-
-### Final Presentation (last week of semester)
-
-Aplication of Encounter options  
-
-## Group Responsibilities
-Here each group member gets a section where they, as an individual, detail what they are responsible for in this project. Each group member writes their own Responsibility section. Include the milestones and final deliverable.
-
-
-
+##Title:Dungeon Hall Z
+##Authors
 ### Andry Lora @andrylr
-Create monster objects and their parameters  
-Modification of Player object with lambda functions
-
 ### Joel Cruz @joel24478
-Traversion of the Dungeon(tree)
-Aplication of Encounter options
+
+
+##Overview
+There a several buttons which are used to act within the enviroment that were created using the gui library.There are monsters that the player fights and come out victorious or a loser based on how lucky they really are.
+
+##Screenshot
+(insert a screenshot here. You may opt to get rid of the title for it. You need at least one screenshot. Make it actually appear here, don't just add a link.)
+
+Here's a demonstration of how to display an image that's uploaded to this repo:
+![screenshot showing env diagram](withdraw.png)
+
+##Concepts Demonstrated
+
+* **Object oriented**:We used dispatch and within the dispatch are all the functions that pertain to that object
+* **Getter and Setter methods**:This was an important piece to the puzzle to get the data that was only within the scope
+of the dispatch to the outside.
+* **Higher Order Procedures** There were multiple uses of callbacks within this project which were connected to button presses.
+
+##External Technology and Libraries
+
+* [GUI Library](https://docs.racket-lang.org/gui/):We used the GUI library to create a window which had a text window for displaying our data to the user in a white box
+that was a white color different than the background.We assigned functionality to the buttons within the simple interface to change 
+the values of the objects.
+
+* [AVL Tree](https://docs.racket-lang.org/avl/index.html):
+
+##Favorite Scheme Expressions
+####Andry 
+This is my favorite segment.What it does it it creates a button which has a callback function that takes other function and calls them.The reason why it is my favorite is not because it has complexity but because of how the elements combine nicely within the callback function.I did not understand callback functions at all but I understand them better know "They are functions that are called when something happens" in this project it was button presses.
+```scheme
+(define battle (new horizontal-panel% [parent frame]))
+
+(new button% [parent battle]
+             [label "Attack"]
+             [min-width 130]
+             [min-height 100]
+             [callback (lambda (b e) (clear-text)    
+                         (monster-clear-text)
+                         (define monster-damage-done (monster 'attack))
+                         (define player-damage-done (Player1 'attack))  
+                         (define monster-damage-taken ((monster 'attacked) player-damage-done))
+                         (define player-damage-taken ((Player1 'attacked) monster-damage-done))
+                         (define player-HP (Player1 'getHealth))
+                         (define monster-HP (monster 'getHealth))
+                         (cond ((< player-HP 0)(send editor insert player-dead))
+                               ((< monster-HP 0)(send editor insert monster-dead))
+                               (else(nextPhase player-HP monster-HP player-damage-done monster-damage-done)))
+                         )])
+                 
+```
+####Lillian (another team member)
+Each team member should identify a favorite expression or procedure, written by them, and explain what it does. Why is it your favorite? What OPL philosophy does it embody?
+```scheme
+(let* ((expr (convert-to-regexp (read-line my-in-port)))
+             (matches (flatten
+                       (hash-map *words*
+                                 (lambda (key value)
+                                   (if (regexp-match expr key) key '()))))))
+  matches)
+```
+
+#How to Download and Run
+* Download the .zip
+* extract
+* open project.rkt with racket
+* click run at the top right
+
+When running you can click on the buttons labled with the specific actions to be performed and the output of your actions will be displayed.The attack numbers are randomly generated so when you fight against the monster you can kill them instantly or they can do the same to you.Is RNG on your side?
 
 
 
 
- 
+You may want to link to your latest release for easy downloading by people (such as Mark).
+
+Include what file to run, what to do with that file, how to interact with the app when its running, etc. 
