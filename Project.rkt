@@ -31,6 +31,12 @@
                   [enabled #f]))
 
 
+;;turns into a string
+;;credit to http://stackoverflow.com/questions/13313815/scheme-convert-boolean-to-string
+(define (->string x)
+  (call-with-output-string
+   (lambda (out)
+     (display x out))))
 
 
 
@@ -88,8 +94,6 @@
 
 (define msg (new message% [parent frame]
                           [label ""]))
-
-
   
 (define (monster-dead)
   (set! monster (nextEnemy))
@@ -345,12 +349,6 @@
 (define BOSS (Monster BossHp))
 
 
-;;turns into a string
-;;credit to http://stackoverflow.com/questions/13313815/scheme-convert-boolean-to-string
-(define (->string x)
-  (call-with-output-string
-   (lambda (out)
-     (display x out))))
 
 
 ;;(define damage-done (->string ((Player1 'attack)100)))
@@ -368,3 +366,10 @@
 (addEnemy monster4)
 (addEnemy monster5)
 (addEnemy BOSS)
+
+(define (init)
+  (send editor insert (string-append "Players HP: " (->string (Player1 'getHealth)) ))
+  (send monster-editor insert (string-append "Monsters HP: " (->string (monster 'getHealth))))
+  (send potion-editor insert (->string (Player1 'getPotion))))
+
+(init)
