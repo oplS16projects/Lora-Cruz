@@ -64,6 +64,16 @@
 (define monster-dead "Enemy defeated")
 (define player-dead "YOU DIED, WORTHLESS SCUM!")
 
+(define (monster-attack-output HP damage)
+  (string-append "Monsters HP: " (->string HP) " Monster attacked for: "  (->string damage) " damage" ))
+
+(define (player-attack-output HP damage)
+  (string-append "Players HP: " (->string HP)  " You attacked for: "  (->string damage) " damage" ))
+
+(define (nextPhase player-HP monster-HP player-damage-done monster-damage-done)
+  (send editor insert (player-attack-output player-HP player-damage-done))
+  (send monster-editor insert  (monster-attack-output monster-HP monster-damage-done)))
+
 
 (define battle (new horizontal-panel% [parent frame]))
 
@@ -79,12 +89,9 @@
                          (define player-damage-taken ((Player1 'attacked) monster-damage-done))
                          (define player-HP (Player1 'getHealth))
                          (define monster-HP (monster 'getHealth))
-                         (define monster-attack-output(string-append "Monsters HP: " (->string monster-HP) " Monster attacked for: "  (->string monster-damage-done) " damage" ))
-                         (define player-attack-output(string-append "Players HP: " (->string player-HP)  " You attacked for: "  (->string player-damage-done) " damage" ))
                          (cond ((< player-HP 0)(send editor insert player-dead))
-                               (else
-                             ((send editor insert player-attack-output)
-                              (send monster-editor insert  monster-attack-output))))
+                               ((< monster-HP 0)(send editor insert monster-dead))
+                               (else(nextPhase player-HP monster-HP player-damage-done monster-damage-done)))
                          )])
                  
 
