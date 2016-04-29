@@ -1,7 +1,9 @@
 #lang racket/gui
+(require "DungeonAVL.rkt")
 
 (define StarterMonsterHp 50)
 (define BossHp 1000)
+
 
 (define frame (new frame% [label "Welcome to Dungeon Hall Z"]
                    [min-width 200]
@@ -270,3 +272,13 @@
 
 
 ;;(define damage-done (->string ((Player1 'attack)100)))
+
+;;Creating a Dungeon
+(addEnemy monster)
+(addEnemy monster)
+(addEnemy monster)
+(addEnemy monster)
+(addEnemy monster)
+(addEnemy monster)
+(addEnemy BOSS)
+
