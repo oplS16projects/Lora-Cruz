@@ -1,4 +1,5 @@
 #lang racket/gui
+(require "DungeonAVL.rkt")
 
 (define StarterMonsterHp 50)
 (define BossHp 1000)
@@ -90,7 +91,9 @@
 
 
   
-(define monster-dead "Enemy defeated")
+(define (monster-dead)
+  (set! monster (nextEnemy))
+  "Enemy defeated")
 (define player-dead "YOU DIED, WORTHLESS SCUM!")
 
 (define (monster-attack-output HP damage)
@@ -101,11 +104,6 @@
 
 (define (player-heal-output HP damage)
 (string-append "Players HP: " (->string HP)  " You Healed for: "  (->string "50") " health" ))
-
-
-
-
-
 
 (define (nextPhase player-HP monster-HP player-damage-done monster-damage-done)
   (send editor insert (player-attack-output player-HP player-damage-done))
@@ -131,7 +129,8 @@
                          (define player-HP (Player1 'getHealth))
                          (define monster-HP (monster 'getHealth))
                          (cond ((< player-HP 0)(send editor insert player-dead))
-                               ((< monster-HP 0)(send editor insert monster-dead))
+                               ((< monster-HP 0)(send monster-editor insert (monster-dead))
+                                                (send editor insert (string-append "Players HP: " (->string (Player1 'getHealth)))))
                                (else(nextPhase player-HP monster-HP player-damage-done monster-damage-done)))
                          )])
                  
@@ -170,7 +169,7 @@
                         (monster-clear-text)
                              (define potions-left (->string ((Player1 'run)100)))
                              (define potion-output (string-append  "You lost: "  "1" " potion while running away"))
-                         (define monster-damage-done (->string ((monster 'attack)100)))
+                         (define monster-damage-done (->string (monster 'attack)))
                          (define monster-attack-output(string-append "Monster attacked for: "  monster-damage-done " damage" ))
                         (send editor insert potion-output)
                         (send monster-editor insert  monster-damage-done))])
@@ -178,7 +177,9 @@
 
 
 
-
+(define (special-goes-off damage)
+  ((monster 'attacked) damage)
+  (string-append "Players HP: " (->string (Player1 'getHealth)) " Special: NovaCane Strike: 500"))
 
 (new button% [parent battle]
      [label "Special"]
@@ -189,15 +190,17 @@
                  (define special-use (Player1 'special))
                  (define special-output
                    (if (number? special-use);;if its a number then it means we can attack
-                       (string-append "Players HP: " (->string (Player1 'getHealth)) " Special: NovaCane Strike" (->string special-use))
+                       (special-goes-off 500)
                        (string-append "Players HP: " (->string (Player1 'getHealth)) (->string special-use)))) ;;else we got the string "Cant use special yet!"
                  (send editor insert special-output)
-                 (send monster-editor insert (string-append (monster-attack-output (monster 'getHealth) (monster 'attack))))
+                 (if (< (monster 'getHealth) 0)
+                     (send monster-editor insert (monster-dead))
+                     (send monster-editor insert (string-append (monster-attack-output (monster 'getHealth) (monster 'attack)))))
                        )])
 
 
 (new button% [parent battle]
-             [label "Start/Restart"]
+             [label "Next Enemy"]
              [min-width 130]
              [min-height 100]
 
@@ -206,9 +209,9 @@
                          (monster-clear-text)
                          (potion-clear-text)
                          (getHealed)
-                         (define start-health(string-append "Players HP: " "100" ))
-                         (define monster-start-health(string-append "Monster HP: " "50" ))
-                         (define start-potions(string-append  "11" ))
+                         (define start-health(string-append "Players HP: " (->string (Player1 'getHealth))))
+                         (define monster-start-health(string-append "Monster HP: "  (->string (monster 'getHealth))))
+                         (define start-potions (->string (Player1 'getPotion)))
                          (send editor insert start-health)
                          (send monster-editor insert monster-start-health)  
                          (send potion-editor insert  start-potions)
@@ -229,13 +232,14 @@
   (define PlayerHP health)
   (define PlayerPotion potions)
 
-  
+  (define (useSpecial)
+    (set! special-counter (- special-counter 3))
+    500)
 
   (define (special) 
     (if (> special-counter 3)
         ;;remove monster / damage boss to half
-        ((begin (set! special-counter (- special-counter 3))
-               special-counter) 500)
+       (useSpecial)
         " Cant use special yet!"))
 
   ;Damage taken after attacking
@@ -243,7 +247,7 @@
   (define (attack)
     (define miss (random 100))
     (define damage (random 30))
-    (+ special-counter 1)
+    (set! special-counter (+ special-counter 1))
     (if ( >= miss 30)
           damage
           0))
@@ -253,10 +257,13 @@
     (set! PlayerHP (- PlayerHP damage)))
 
 
-  (define (getHealed)
-    
+  (define (getHealed)   
     (set! PlayerHP (+ PlayerHP 50))
     (set! PlayerPotion (- PlayerPotion 1))
+    PlayerPotion)
+
+  (define (setPotion value)
+    (set! PlayerPotion value)
     PlayerPotion)
   
    
@@ -279,7 +286,9 @@
           ((eq? m 'special) (special))
           ((eq? m 'getHealth) PlayerHP)
           ((eq? m 'setHealth) setHealth)
-          ((eq? m 'attacked) getAttacked)        
+          ((eq? m 'attacked) getAttacked)
+          ((eq? m 'getPotion) PlayerPotion)
+          ((eq? m 'setPotion) setPotion)
           ((eq? m 'healed) (if (and (> PlayerPotion 0) (> PlayerHP 0)) (getHealed)"No Potions"))
          ;;Gave an error because dispatch requires an else
           (else (error "Not a Command"
@@ -345,3 +354,17 @@
 
 
 ;;(define damage-done (->string ((Player1 'attack)100)))
+
+(define monster1 (Monster  StarterMonsterHp))
+(define monster2 (Monster  StarterMonsterHp))
+(define monster3 (Monster  StarterMonsterHp))
+(define monster4 (Monster  StarterMonsterHp))
+(define monster5 (Monster  StarterMonsterHp))
+
+;;Create Dungeon
+(addEnemy monster1)
+(addEnemy monster2)
+(addEnemy monster3)
+(addEnemy monster4)
+(addEnemy monster5)
+(addEnemy BOSS)
