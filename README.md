@@ -38,6 +38,9 @@ The original plan for the creation of the Player and the monsters was to create 
 Create monster objects and their parameters  
 Modification of Player object with lambda functions  
 
+### First Milestone Update
+As of  current we have achieved most of our initial proposals with slight alterations.The dispatches for the enemies and and player are taking in some arbitriary value in order to see the functions working we plan on changing some of the elements within the dispatcher into setters and getters in order to make to make obtaining specific values more easily.We began the initial implimentation of the encounter window we added a simple GUI with outputs from both monsters and players displaying some of their actions so the person interacting can know what is happening.There are buttons for this simple interaction window but the functionality is simple.
+
 ### Final Presentation (last week of semester)
 
 Aplication of Encounter options  
